@@ -7,13 +7,14 @@ import logging
 class CommentSpider(scrapy.Spider):
     name = "comments"
     allowed_domains = ["movie.douban.com"]
-    start_urls = ["https://movie.douban.com/subject/26284595/comments?sort=new_score"]
+    start_urls = ["https://movie.douban.com/subject/26284595/comments?start=1415&limit=20&sort=new_score"]
 
     headers = HEADERS
+    cookies = COOKIES
 
     def start_requests(self):
         for u in self.start_urls:
-            yield scrapy.Request(u, headers=self.headers, callback=self.parse)
+            yield scrapy.Request(u, headers=self.headers, cookies=self.cookies, callback=self.parse)
 
     def parse(self, response):
         logging.info("{0}: {1}.".format(response.status, response.url))
@@ -42,4 +43,4 @@ class CommentSpider(scrapy.Spider):
             logging.warning("No next url anymore!")
             return
         bash_url = "https://movie.douban.com/subject/26284595/comments"
-        yield scrapy.Request(bash_url + next_url, headers=self.headers, callback=self.parse)
+        yield scrapy.Request(bash_url + next_url, headers=self.headers, cookies=self.cookies, callback=self.parse)

@@ -93,3 +93,5 @@ ENV/
 # csv file
 *.csv
 .DS_Store
+
+*.local
